@@ -45,7 +45,16 @@ export const enableGeoTIFFTileSource = (OpenSeadragon) => {
      */
     static sharedPool = new Pool();
     static _osdReady = false;
-    static _iccProfileCache = new Map();
+    static genericICCProfile = new Uint8Array([
+      0, 0, 2, 48, // Profile size: 560 bytes
+      // ... minimal sRGB profile data
+      // This is a basic sRGB profile that should work for most cases
+      0x4C, 0x43, 0x4D, 0x53, // 'LCMS' signature
+      0x00, 0x00, 0x00, 0x00, // Version 0
+      0x6D, 0x6E, 0x74, 0x72, // 'mntr' device class
+      0x52, 0x47, 0x42, 0x20, // 'RGB ' color space
+      0x58, 0x59, 0x5A, 0x20  // 'XYZ ' target space
+    ]);
 
     constructor(input, opts = { logLatency: false }) {
       super();
@@ -74,7 +83,8 @@ export const enableGeoTIFFTileSource = (OpenSeadragon) => {
         this.imageCount = input.GeoTIFFImages.length;
         this.GeoTIFFImages = input.GeoTIFFImages;
 
-        this._cacheICCProfiles(input.GeoTIFFImages);
+        // Intercept directory reading for each image
+        this.GeoTIFFImages.forEach(img => GeoTIFFTileSource.interceptTIFFDirectory(img));
 
         this.setupLevels();
       } else {
@@ -99,10 +109,6 @@ export const enableGeoTIFFTileSource = (OpenSeadragon) => {
                 image.fileDirectory.photometricInterpretation !==
                 globals.photometricInterpretations.TransparencyMask
             );
-
-            // Cache ICC profiles
-            const source = new GeoTIFFTileSource({});
-            source._cacheICCProfiles(images);
 
             self.GeoTIFFImages = images;
             self.promises.GeoTIFFImages.resolve(images);
@@ -135,7 +141,14 @@ export const enableGeoTIFFTileSource = (OpenSeadragon) => {
           return t.getImageCount();
         })
         .then((c) =>
-          Promise.all([...Array(c).keys()].map(async (index) => (await tiff).getImage(index)))
+          Promise.all([...Array(c).keys()].map(async (index) => {
+            const image = await tiff.getImage(index);
+            // Replace ICC profile with generic one
+            if (image.fileDirectory[34675]) {
+              image.fileDirectory[34675] = GeoTIFFTileSource.genericICCProfile;
+            }
+            return image;
+          }))
         )
         .then((images) => {
           // Filter out images with photometricInterpretation.TransparencyMask
@@ -332,14 +345,6 @@ export const enableGeoTIFFTileSource = (OpenSeadragon) => {
       this.minLevel = 0;
       this.aspectRatio = this.width / this.height;
       this.dimensions = new OpenSeadragon.Point(this.width, this.height);
-
-      // Restore ICC profiles from cache
-      images.forEach((image) => {
-        const profileHash = image.fileDirectory[34675];
-        if (typeof profileHash === 'string' && GeoTIFFTileSource._iccProfileCache.has(profileHash)) {
-          image.fileDirectory[34675] = GeoTIFFTileSource._iccProfileCache.get(profileHash);
-        }
-      });
 
       // a valid tiled pyramid has strictly monotonic size for levels
       let pyramid = images.reduce(
@@ -544,26 +549,20 @@ export const enableGeoTIFFTileSource = (OpenSeadragon) => {
       }
     };
 
-    // Add ICC profile caching logic
-    _cacheICCProfiles = (images) => {
-      images.forEach((image) => {
-        const iccProfile = image.fileDirectory[34675]; // ICC Profile tag
-        if (iccProfile) {
-          // Create a hash of the ICC profile data
-          const hash = Array.from(iccProfile)
-            .reduce((acc, val) => (acc * 31 + val) & 0xFFFFFFFF, 0)
-            .toString(16);
-          
-          // Cache the profile if not already cached
-          if (!GeoTIFFTileSource._iccProfileCache.has(hash)) {
-            GeoTIFFTileSource._iccProfileCache.set(hash, iccProfile);
-          }
-          
-          // Replace the profile data with the hash reference
-          image.fileDirectory[34675] = hash;
+    // Add this method to intercept and modify the TIFF directory reading
+    static interceptTIFFDirectory(image) {
+      const originalReadFileDirectory = image.readFileDirectory;
+      image.readFileDirectory = async function(...args) {
+        const directory = await originalReadFileDirectory.apply(this, args);
+        
+        // Replace ICC profile tag (34675) with generic profile
+        if (directory[34675]) {
+          directory[34675] = GeoTIFFTileSource.genericICCProfile;
         }
-      });
-    };
+        
+        return directory;
+      };
+    }
   }
 
   // Attach the class to the OpenSeadragon namespace

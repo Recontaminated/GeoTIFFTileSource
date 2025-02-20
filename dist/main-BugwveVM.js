@@ -1,11 +1,11 @@
 var ut = Object.defineProperty;
 var dt = (n, e, t) => e in n ? ut(n, e, { enumerable: !0, configurable: !0, writable: !0, value: t }) : n[e] = t;
-var P = (n, e, t) => dt(n, typeof e != "symbol" ? e + "" : e, t);
-function E(n) {
+var E = (n, e, t) => dt(n, typeof e != "symbol" ? e + "" : e, t);
+function P(n) {
   return (e, ...t) => gt(n, e, t);
 }
 function q(n, e) {
-  return E(
+  return P(
     Ue(
       n,
       e
@@ -33,7 +33,7 @@ const {
   defineProperty: wt,
   freeze: ts,
   is: rs
-} = mt, xt = Array, bt = xt.prototype, Le = bt[J], It = E(Le), Ne = ArrayBuffer, Tt = Ne.prototype;
+} = mt, xt = Array, bt = xt.prototype, Le = bt[J], It = P(Le), Ne = ArrayBuffer, Tt = Ne.prototype;
 q(Tt, "byteLength");
 const Me = typeof SharedArrayBuffer < "u" ? SharedArrayBuffer : null;
 Me && q(Me.prototype, "byteLength");
@@ -41,24 +41,24 @@ const je = ye(Uint8Array);
 je.from;
 const k = je.prototype;
 k[J];
-E(k.keys);
-E(
+P(k.keys);
+P(
   k.values
 );
-E(
+P(
   k.entries
 );
-E(k.set);
-E(
+P(k.set);
+P(
   k.reverse
 );
-E(k.fill);
-E(
+P(k.fill);
+P(
   k.copyWithin
 );
-E(k.sort);
-E(k.slice);
-E(
+P(k.sort);
+P(k.slice);
+P(
   k.subarray
 );
 q(
@@ -77,10 +77,10 @@ q(
   k,
   pt
 );
-const St = Uint8Array, ze = Uint16Array, me = Uint32Array, At = Float32Array, Z = ye([][J]()), Ke = E(Z.next), Dt = E(function* () {
-}().next), Ft = ye(Z), Ct = DataView.prototype, Et = E(
-  Ct.getUint16
-), we = WeakMap, Ve = we.prototype, qe = E(Ve.get), Pt = E(Ve.set), He = new we(), kt = pe(null, {
+const St = Uint8Array, ze = Uint16Array, me = Uint32Array, At = Float32Array, Z = ye([][J]()), Ke = P(Z.next), Dt = P(function* () {
+}().next), Ct = ye(Z), Ft = DataView.prototype, Et = P(
+  Ft.getUint16
+), we = WeakMap, Ve = we.prototype, qe = P(Ve.get), Pt = P(Ve.set), He = new we(), kt = pe(null, {
   next: {
     value: function() {
       const e = qe(He, this);
@@ -99,7 +99,7 @@ function Rt(n) {
   const e = pe(kt);
   return Pt(He, e, It(n)), e;
 }
-const Mt = new we(), Bt = pe(Ft, {
+const Mt = new we(), Bt = pe(Ct, {
   next: {
     value: function() {
       const e = qe(Mt, this);
@@ -198,11 +198,11 @@ function tt(n, e, t) {
   const c = l !== -1 && a[l - 1] === "/";
   if (r && console.log("[xml-utils] selfClosing:", c), c === !1)
     if (i) {
-      let f = 0, d = 1, p = 0;
+      let f = 0, g = 1, p = 0;
       for (; (l = le(a, "[ /]" + e + ">", f)) !== -1; ) {
         const y = a.substring(f, l + 1);
-        if (d += Be(y, "<" + e + `[ 
-	>]`), p += Be(y, "</" + e + ">"), p >= d) break;
+        if (g += Be(y, "<" + e + `[ 
+	>]`), p += Be(y, "</" + e + ">"), p >= g) break;
         f = l;
       }
     } else
@@ -210,8 +210,8 @@ function tt(n, e, t) {
   const u = o + e.length + l + 1;
   if (r && console.log("[xml-utils] end:", u), u === -1) return;
   const h = n.slice(o, u);
-  let g;
-  return c ? g = null : g = h.slice(h.indexOf(">") + 1, h.lastIndexOf("<")), { inner: g, outer: h, start: o, end: u };
+  let d;
+  return c ? d = null : d = h.slice(h.indexOf(">") + 1, h.lastIndexOf("<")), { inner: d, outer: h, start: o, end: u };
 }
 Te.exports = tt;
 Te.exports.default = tt;
@@ -374,7 +374,7 @@ const Ht = [
 }, x = {};
 for (const n in ce)
   ce.hasOwnProperty(n) && (x[ce[n]] = parseInt(n, 10));
-const D = {
+const A = {
   WhiteIsZero: 0,
   BlackIsZero: 1,
   RGB: 2,
@@ -487,8 +487,8 @@ function sr(n) {
   const { width: e, height: t } = n, r = new Uint8Array(e * t * 3);
   for (let i = 0, s = 0; i < n.length; i += 3, s += 3) {
     const o = n[i + 0], a = n[i + 1] << 24 >> 24, l = n[i + 2] << 24 >> 24;
-    let c = (o + 16) / 116, u = a / 500 + c, h = c - l / 200, g, f, d;
-    u = er * (u * u * u > 8856e-6 ? u * u * u : (u - 16 / 116) / 7.787), c = tr * (c * c * c > 8856e-6 ? c * c * c : (c - 16 / 116) / 7.787), h = rr * (h * h * h > 8856e-6 ? h * h * h : (h - 16 / 116) / 7.787), g = u * 3.2406 + c * -1.5372 + h * -0.4986, f = u * -0.9689 + c * 1.8758 + h * 0.0415, d = u * 0.0557 + c * -0.204 + h * 1.057, g = g > 31308e-7 ? 1.055 * g ** (1 / 2.4) - 0.055 : 12.92 * g, f = f > 31308e-7 ? 1.055 * f ** (1 / 2.4) - 0.055 : 12.92 * f, d = d > 31308e-7 ? 1.055 * d ** (1 / 2.4) - 0.055 : 12.92 * d, r[s] = Math.max(0, Math.min(1, g)) * 255, r[s + 1] = Math.max(0, Math.min(1, f)) * 255, r[s + 2] = Math.max(0, Math.min(1, d)) * 255;
+    let c = (o + 16) / 116, u = a / 500 + c, h = c - l / 200, d, f, g;
+    u = er * (u * u * u > 8856e-6 ? u * u * u : (u - 16 / 116) / 7.787), c = tr * (c * c * c > 8856e-6 ? c * c * c : (c - 16 / 116) / 7.787), h = rr * (h * h * h > 8856e-6 ? h * h * h : (h - 16 / 116) / 7.787), d = u * 3.2406 + c * -1.5372 + h * -0.4986, f = u * -0.9689 + c * 1.8758 + h * 0.0415, g = u * 0.0557 + c * -0.204 + h * 1.057, d = d > 31308e-7 ? 1.055 * d ** (1 / 2.4) - 0.055 : 12.92 * d, f = f > 31308e-7 ? 1.055 * f ** (1 / 2.4) - 0.055 : 12.92 * f, g = g > 31308e-7 ? 1.055 * g ** (1 / 2.4) - 0.055 : 12.92 * g, r[s] = Math.max(0, Math.min(1, d)) * 255, r[s + 1] = Math.max(0, Math.min(1, f)) * 255, r[s + 2] = Math.max(0, Math.min(1, g)) * 255;
   }
   return r;
 }
@@ -513,7 +513,7 @@ N([8, 32946], () => import("./deflate-BXt-9JA_.js").then((n) => n.default));
 N(32773, () => import("./packbits-BlDR4Kj5.js").then((n) => n.default));
 N(
   34887,
-  () => import("./lerc-DAaxMNPC.js").then(async (n) => (await n.zstd.init(), n)).then((n) => n.default)
+  () => import("./lerc-CvOUOf5E.js").then(async (n) => (await n.zstd.init(), n)).then((n) => n.default)
 );
 N(50001, () => import("./webimage-BM_pbLN3.js").then((n) => n.default));
 function se(n, e, t, r = 1) {
@@ -526,7 +526,7 @@ function ir(n, e, t, r, i) {
     for (let c = 0; c < i; ++c) {
       const u = Math.min(Math.round(o * c), t - 1);
       for (let h = 0; h < r; ++h) {
-        const g = Math.min(Math.round(s * h), e - 1), f = a[u * e + g];
+        const d = Math.min(Math.round(s * h), e - 1), f = a[u * e + d];
         l[c * r + h] = f;
       }
     }
@@ -541,14 +541,14 @@ function nr(n, e, t, r, i) {
   return n.map((a) => {
     const l = se(a, r, i);
     for (let c = 0; c < i; ++c) {
-      const u = o * c, h = Math.floor(u), g = Math.min(Math.ceil(u), t - 1);
+      const u = o * c, h = Math.floor(u), d = Math.min(Math.ceil(u), t - 1);
       for (let f = 0; f < r; ++f) {
-        const d = s * f, p = d % 1, y = Math.floor(d), w = Math.min(Math.ceil(d), e - 1), m = a[h * e + y], I = a[h * e + w], T = a[g * e + y], S = a[g * e + w], A = K(
+        const g = s * f, p = g % 1, y = Math.floor(g), w = Math.min(Math.ceil(g), e - 1), m = a[h * e + y], I = a[h * e + w], T = a[d * e + y], S = a[d * e + w], D = K(
           K(m, I, p),
           K(T, S, p),
           u % 1
         );
-        l[c * r + f] = A;
+        l[c * r + f] = D;
       }
     }
     return l;
@@ -570,10 +570,10 @@ function ar(n, e, t, r, i, s) {
   for (let c = 0; c < i; ++c) {
     const u = Math.min(Math.round(a * c), t - 1);
     for (let h = 0; h < r; ++h) {
-      const g = Math.min(Math.round(o * h), e - 1);
+      const d = Math.min(Math.round(o * h), e - 1);
       for (let f = 0; f < s; ++f) {
-        const d = n[u * e * s + g * s + f];
-        l[c * r * s + h * s + f] = d;
+        const g = n[u * e * s + d * s + f];
+        l[c * r * s + h * s + f] = g;
       }
     }
   }
@@ -582,16 +582,16 @@ function ar(n, e, t, r, i, s) {
 function lr(n, e, t, r, i, s) {
   const o = e / r, a = t / i, l = se(n, r, i, s);
   for (let c = 0; c < i; ++c) {
-    const u = a * c, h = Math.floor(u), g = Math.min(Math.ceil(u), t - 1);
+    const u = a * c, h = Math.floor(u), d = Math.min(Math.ceil(u), t - 1);
     for (let f = 0; f < r; ++f) {
-      const d = o * f, p = d % 1, y = Math.floor(d), w = Math.min(Math.ceil(d), e - 1);
+      const g = o * f, p = g % 1, y = Math.floor(g), w = Math.min(Math.ceil(g), e - 1);
       for (let m = 0; m < s; ++m) {
-        const I = n[h * e * s + y * s + m], T = n[h * e * s + w * s + m], S = n[g * e * s + y * s + m], A = n[g * e * s + w * s + m], F = K(
+        const I = n[h * e * s + y * s + m], T = n[h * e * s + w * s + m], S = n[d * e * s + y * s + m], D = n[d * e * s + w * s + m], C = K(
           K(I, T, p),
-          K(S, A, p),
+          K(S, D, p),
           u % 1
         );
-        l[c * r * s + f * s + m] = F;
+        l[c * r * s + f * s + m] = C;
       }
     }
   }
@@ -664,25 +664,25 @@ function fr(n, e) {
 function ur(n, e, t, r, i, s, o) {
   const a = new DataView(n), l = t === 2 ? o * s : o * s * r, c = t === 2 ? 1 : r, u = ue(e, i, l), h = parseInt("1".repeat(i), 2);
   if (e === 1) {
-    let g;
-    t === 1 ? g = r * i : g = i;
-    let f = s * g;
+    let d;
+    t === 1 ? d = r * i : d = i;
+    let f = s * d;
     f & 7 && (f = f + 7 & -8);
-    for (let d = 0; d < o; ++d) {
-      const p = d * f;
+    for (let g = 0; g < o; ++g) {
+      const p = g * f;
       for (let y = 0; y < s; ++y) {
         const w = p + y * c * i;
         for (let m = 0; m < c; ++m) {
-          const I = w + m * i, T = (d * s + y) * c + m, S = Math.floor(I / 8), A = I % 8;
-          if (A + i <= 8)
-            u[T] = a.getUint8(S) >> 8 - i - A & h;
-          else if (A + i <= 16)
-            u[T] = a.getUint16(S) >> 16 - i - A & h;
-          else if (A + i <= 24) {
-            const F = a.getUint16(S) << 8 | a.getUint8(S + 2);
-            u[T] = F >> 24 - i - A & h;
+          const I = w + m * i, T = (g * s + y) * c + m, S = Math.floor(I / 8), D = I % 8;
+          if (D + i <= 8)
+            u[T] = a.getUint8(S) >> 8 - i - D & h;
+          else if (D + i <= 16)
+            u[T] = a.getUint16(S) >> 16 - i - D & h;
+          else if (D + i <= 24) {
+            const C = a.getUint16(S) << 8 | a.getUint8(S + 2);
+            u[T] = C >> 24 - i - D & h;
           } else
-            u[T] = a.getUint32(S) >> 32 - i - A & h;
+            u[T] = a.getUint32(S) >> 32 - i - D & h;
         }
       }
     }
@@ -838,20 +838,20 @@ class dr {
     this.planarConfiguration === 1 ? l = t * o + e : this.planarConfiguration === 2 && (l = r * o * a + t * o + e);
     let u, h;
     this.isTiled ? (u = this.fileDirectory.TileOffsets[l], h = this.fileDirectory.TileByteCounts[l]) : (u = this.fileDirectory.StripOffsets[l], h = this.fileDirectory.StripByteCounts[l]);
-    const g = (await this.source.fetch([{ offset: u, length: h }], s))[0];
+    const d = (await this.source.fetch([{ offset: u, length: h }], s))[0];
     let f;
     return c === null || !c[l] ? (f = (async () => {
-      let d = await i.decode(this.fileDirectory, g);
+      let g = await i.decode(this.fileDirectory, d);
       const p = this.getSampleFormat(), y = this.getBitsPerSample();
-      return fr(p, y) && (d = ur(
-        d,
+      return fr(p, y) && (g = ur(
+        g,
         p,
         this.planarConfiguration,
         this.getSamplesPerPixel(),
         y,
         this.getTileWidth(),
         this.getBlockHeight(t)
-      )), d;
+      )), g;
     })(), c !== null && (c[l] = f)) : f = c[l], { x: e, y: t, sample: r, data: await f };
   }
   /**
@@ -870,9 +870,9 @@ class dr {
    * @returns {Promise<ReadRasterResult>}
    */
   async _readRaster(e, t, r, i, s, o, a, l, c) {
-    const u = this.getTileWidth(), h = this.getTileHeight(), g = this.getWidth(), f = this.getHeight(), d = Math.max(Math.floor(e[0] / u), 0), p = Math.min(
+    const u = this.getTileWidth(), h = this.getTileHeight(), d = this.getWidth(), f = this.getHeight(), g = Math.max(Math.floor(e[0] / u), 0), p = Math.min(
       Math.ceil(e[2] / u),
-      Math.ceil(g / u)
+      Math.ceil(d / u)
     ), y = Math.max(Math.floor(e[1] / h), 0), w = Math.min(
       Math.ceil(e[3] / h),
       Math.ceil(f / h)
@@ -881,31 +881,31 @@ class dr {
     const T = [], S = [];
     for (let b = 0; b < t.length; ++b)
       this.planarConfiguration === 1 ? T.push(hr(this.fileDirectory.BitsPerSample, 0, t[b]) / 8) : T.push(0), S.push(this.getReaderForSample(t[b]));
-    const A = [], { littleEndian: F } = this;
+    const D = [], { littleEndian: C } = this;
     for (let b = y; b < w; ++b)
-      for (let G = d; G < p; ++G) {
+      for (let G = g; G < p; ++G) {
         let R;
         this.planarConfiguration === 1 && (R = this.getTileOrStrip(G, b, 0, s, c));
-        for (let C = 0; C < t.length; ++C) {
-          const M = C, U = t[C];
+        for (let F = 0; F < t.length; ++F) {
+          const M = F, U = t[F];
           this.planarConfiguration === 2 && (I = this.getSampleByteSize(U), R = this.getTileOrStrip(G, b, U, s, c));
           const L = R.then((B) => {
-            const Q = B.data, ne = new DataView(Q), oe = this.getBlockHeight(B.y), Y = B.y * h, ee = B.x * u, ot = Y + oe, at = (B.x + 1) * u, lt = S[M], ct = Math.min(oe, oe - (ot - e[3]), f - Y), ht = Math.min(u, u - (at - e[2]), g - ee);
+            const Q = B.data, ne = new DataView(Q), oe = this.getBlockHeight(B.y), Y = B.y * h, ee = B.x * u, ot = Y + oe, at = (B.x + 1) * u, lt = S[M], ct = Math.min(oe, oe - (ot - e[3]), f - Y), ht = Math.min(u, u - (at - e[2]), d - ee);
             for (let X = Math.max(0, e[1] - Y); X < ct; ++X)
               for (let $ = Math.max(0, e[0] - ee); $ < ht; ++$) {
                 const ft = (X * u + $) * I, Re = lt.call(
                   ne,
                   ft + T[M],
-                  F
+                  C
                 );
                 let te;
                 i ? (te = (X + Y - e[1]) * m * t.length + ($ + ee - e[0]) * t.length + M, r[te] = Re) : (te = (X + Y - e[1]) * m + $ + ee - e[0], r[M][te] = Re);
               }
           });
-          A.push(L);
+          D.push(L);
         }
       }
-    if (await Promise.all(A), o && e[2] - e[0] !== o || a && e[3] - e[1] !== a) {
+    if (await Promise.all(D), o && e[2] - e[0] !== o || a && e[3] - e[1] !== a) {
       let b;
       return i ? b = cr(
         r,
@@ -949,13 +949,13 @@ class dr {
     const u = e || [0, 0, this.getWidth(), this.getHeight()];
     if (u[0] > u[2] || u[1] > u[3])
       throw new Error("Invalid subsets");
-    const h = u[2] - u[0], g = u[3] - u[1], f = h * g, d = this.getSamplesPerPixel();
+    const h = u[2] - u[0], d = u[3] - u[1], f = h * d, g = this.getSamplesPerPixel();
     if (!t || !t.length)
-      for (let m = 0; m < d; ++m)
+      for (let m = 0; m < g; ++m)
         t.push(m);
     else
       for (let m = 0; m < t.length; ++m)
-        if (t[m] >= d)
+        if (t[m] >= g)
           return Promise.reject(new RangeError(`Invalid sample index '${t[m]}'.`));
     let p;
     if (r) {
@@ -1019,7 +1019,7 @@ class dr {
     if (c[0] > c[2] || c[1] > c[3])
       throw new Error("Invalid subsets");
     const u = this.fileDirectory.PhotometricInterpretation;
-    if (u === D.RGB) {
+    if (u === A.RGB) {
       let w = [0, 1, 2];
       if (this.fileDirectory.ExtraSamples !== Yt.Unspecified && a) {
         w = [];
@@ -1039,22 +1039,22 @@ class dr {
     }
     let h;
     switch (u) {
-      case D.WhiteIsZero:
-      case D.BlackIsZero:
-      case D.Palette:
+      case A.WhiteIsZero:
+      case A.BlackIsZero:
+      case A.Palette:
         h = [0];
         break;
-      case D.CMYK:
+      case A.CMYK:
         h = [0, 1, 2, 3];
         break;
-      case D.YCbCr:
-      case D.CIELab:
+      case A.YCbCr:
+      case A.CIELab:
         h = [0, 1, 2];
         break;
       default:
         throw new Error("Invalid or unsupported photometric interpretation.");
     }
-    const g = {
+    const d = {
       window: c,
       interleave: !0,
       samples: h,
@@ -1063,26 +1063,26 @@ class dr {
       height: s,
       resampleMethod: o,
       signal: l
-    }, { fileDirectory: f } = this, d = await this.readRasters(g), p = 2 ** this.fileDirectory.BitsPerSample[0];
+    }, { fileDirectory: f } = this, g = await this.readRasters(d), p = 2 ** this.fileDirectory.BitsPerSample[0];
     let y;
     switch (u) {
-      case D.WhiteIsZero:
-        y = $t(d, p);
+      case A.WhiteIsZero:
+        y = $t(g, p);
         break;
-      case D.BlackIsZero:
-        y = Wt(d, p);
+      case A.BlackIsZero:
+        y = Wt(g, p);
         break;
-      case D.Palette:
-        y = Zt(d, f.ColorMap);
+      case A.Palette:
+        y = Zt(g, f.ColorMap);
         break;
-      case D.CMYK:
-        y = Jt(d);
+      case A.CMYK:
+        y = Jt(g);
         break;
-      case D.YCbCr:
-        y = Qt(d);
+      case A.YCbCr:
+        y = Qt(g);
         break;
-      case D.CIELab:
-        y = sr(d);
+      case A.CIELab:
+        y = sr(g);
         break;
       default:
         throw new Error("Unsupported photometric interpretation.");
@@ -1093,7 +1093,7 @@ class dr {
         w[S] = y[T], m[S] = y[T + 1], I[S] = y[T + 2];
       y = [w, m, I];
     }
-    return y.width = d.width, y.height = d.height, y;
+    return y.width = g.width, y.height = g.height, y;
   }
   /**
    * Returns an array of tiepoints.
@@ -1229,11 +1229,11 @@ class dr {
       ].map(([y, w]) => [
         a + i * y + s * w,
         h + l * y + c * w
-      ]), d = f.map((y) => y[0]), p = f.map((y) => y[1]);
+      ]), g = f.map((y) => y[0]), p = f.map((y) => y[1]);
       return [
-        Math.min(...d),
+        Math.min(...g),
         Math.min(...p),
-        Math.max(...d),
+        Math.max(...g),
         Math.max(...p)
       ];
     } else {
@@ -1526,18 +1526,18 @@ function br(n, e) {
     const l = a.substr(s.length + 2);
     if (l.length === 0)
       break;
-    const c = l.indexOf(Ge), u = wr(l.substr(0, c)), { start: h, end: g, total: f } = de(u["content-range"]), d = t + s.length + c + Ge.length, p = parseInt(g, 10) + 1 - parseInt(h, 10);
+    const c = l.indexOf(Ge), u = wr(l.substr(0, c)), { start: h, end: d, total: f } = de(u["content-range"]), g = t + s.length + c + Ge.length, p = parseInt(d, 10) + 1 - parseInt(h, 10);
     i.push({
       headers: u,
-      data: n.slice(d, d + p),
+      data: n.slice(g, g + p),
       offset: h,
       length: p,
       fileSize: f
-    }), t = d + p + 4;
+    }), t = g + p + 4;
   }
   return i;
 }
-class Fe {
+class Ce {
   /**
    *
    * @param {Slice[]} slices
@@ -1720,7 +1720,7 @@ class Ar extends Error {
   }
 }
 const Dr = Ar;
-class Fr {
+class Cr {
   /**
    *
    * @param {number} offset
@@ -1748,7 +1748,7 @@ class Oe {
     this.offset = e, this.length = t, this.blockIds = r;
   }
 }
-class Cr extends Fe {
+class Fr extends Ce {
   /**
    *
    * @param {BaseSource} source The underlying source that shall be blocked and cached
@@ -1774,35 +1774,35 @@ class Cr extends Fe {
   async fetch(e, t) {
     const r = [], i = [], s = [];
     this.evictedBlocks.clear();
-    for (const { offset: g, length: f } of e) {
-      let d = g + f;
+    for (const { offset: d, length: f } of e) {
+      let g = d + f;
       const { fileSize: p } = this;
-      p !== null && (d = Math.min(d, p));
-      const y = Math.floor(g / this.blockSize) * this.blockSize;
-      for (let w = y; w < d; w += this.blockSize) {
+      p !== null && (g = Math.min(g, p));
+      const y = Math.floor(d / this.blockSize) * this.blockSize;
+      for (let w = y; w < g; w += this.blockSize) {
         const m = Math.floor(w / this.blockSize);
         !this.blockCache.has(m) && !this.blockRequests.has(m) && (this.blockIdsToFetch.add(m), i.push(m)), this.blockRequests.has(m) && r.push(this.blockRequests.get(m)), s.push(m);
       }
     }
     await Tr(), this.fetchBlocks(t);
     const o = [];
-    for (const g of i)
-      this.blockRequests.has(g) && o.push(this.blockRequests.get(g));
+    for (const d of i)
+      this.blockRequests.has(d) && o.push(this.blockRequests.get(d));
     await Promise.allSettled(r), await Promise.allSettled(o);
-    const a = [], l = s.filter((g) => this.abortedBlockIds.has(g) || !this.blockCache.has(g));
-    if (l.forEach((g) => this.blockIdsToFetch.add(g)), l.length > 0 && t && !t.aborted) {
+    const a = [], l = s.filter((d) => this.abortedBlockIds.has(d) || !this.blockCache.has(d));
+    if (l.forEach((d) => this.blockIdsToFetch.add(d)), l.length > 0 && t && !t.aborted) {
       this.fetchBlocks(null);
-      for (const g of l) {
-        const f = this.blockRequests.get(g);
+      for (const d of l) {
+        const f = this.blockRequests.get(d);
         if (!f)
-          throw new Error(`Block ${g} is not in the block requests`);
+          throw new Error(`Block ${d} is not in the block requests`);
         a.push(f);
       }
       await Promise.allSettled(a);
     }
     if (t && t.aborted)
       throw new V("Request was aborted");
-    const c = s.map((g) => this.blockCache.get(g) || this.evictedBlocks.get(g)), u = c.filter((g) => !g);
+    const c = s.map((d) => this.blockCache.get(d) || this.evictedBlocks.get(d)), u = c.filter((d) => !d);
     if (u.length)
       throw new Dr(u, "Request failed");
     const h = new Map(Sr(s, c));
@@ -1820,13 +1820,13 @@ class Cr extends Fe {
         for (const o of s.blockIds)
           this.blockRequests.set(o, (async () => {
             try {
-              const a = (await r)[i], l = o * this.blockSize, c = l - a.offset, u = Math.min(c + this.blockSize, a.data.byteLength), h = a.data.slice(c, u), g = new Fr(
+              const a = (await r)[i], l = o * this.blockSize, c = l - a.offset, u = Math.min(c + this.blockSize, a.data.byteLength), h = a.data.slice(c, u), d = new Cr(
                 l,
                 h.byteLength,
                 h,
                 o
               );
-              this.blockCache.set(o, g), this.abortedBlockIds.delete(o);
+              this.blockCache.set(o, d), this.abortedBlockIds.delete(o);
             } catch (a) {
               if (a.name === "AbortError")
                 a.signal = e, this.blockCache.delete(o), this.abortedBlockIds.add(o);
@@ -1874,17 +1874,17 @@ class Cr extends Fe {
       this.fileSize !== null && (i = Math.min(this.fileSize, i));
       const s = Math.floor(r.offset / this.blockSize), o = Math.floor(i / this.blockSize), a = new ArrayBuffer(r.length), l = new Uint8Array(a);
       for (let c = s; c <= o; ++c) {
-        const u = t.get(c), h = u.offset - r.offset, g = u.top - i;
-        let f = 0, d = 0, p;
-        h < 0 ? f = -h : h > 0 && (d = h), g < 0 ? p = u.length - f : p = i - u.offset - f;
+        const u = t.get(c), h = u.offset - r.offset, d = u.top - i;
+        let f = 0, g = 0, p;
+        h < 0 ? f = -h : h > 0 && (g = h), d < 0 ? p = u.length - f : p = i - u.offset - f;
         const y = new Uint8Array(u.data, f, p);
-        l.set(y, d);
+        l.set(y, g);
       }
       return a;
     });
   }
 }
-class Ce {
+class Fe {
   /**
    * Returns whether the response has an ok'ish status code
    */
@@ -1925,7 +1925,7 @@ class Ee {
     throw new Error("request is not implemented");
   }
 }
-class Er extends Ce {
+class Er extends Fe {
   /**
    * BaseResponse facade for fetch API Response
    * @param {Response} response
@@ -1960,7 +1960,7 @@ class Pr extends Ee {
     return new Er(r);
   }
 }
-class kr extends Ce {
+class kr extends Fe {
   /**
    * BaseResponse facade for XMLHttpRequest
    * @param {XMLHttpRequest} xhr
@@ -1997,7 +1997,7 @@ class Rr extends Ee {
   }
 }
 const he = {};
-class Mr extends Ce {
+class Mr extends Fe {
   /**
    * BaseResponse facade for node HTTP/HTTPS API Response
    * @param {http.ServerResponse} response
@@ -2046,7 +2046,7 @@ class Br extends Ee {
     return await this.constructRequest(e, t);
   }
 }
-class Pe extends Fe {
+class Pe extends Ce {
   /**
    *
    * @param {BaseClient} client
@@ -2089,7 +2089,7 @@ class Pe extends Fe {
           length: l - a
         }];
         if (e.length > 1) {
-          const h = await Promise.all(e.slice(1).map((g) => this.fetchSlice(g, t)));
+          const h = await Promise.all(e.slice(1).map((d) => this.fetchSlice(d, t)));
           return u.concat(h);
         }
         return u;
@@ -2138,7 +2138,7 @@ class Pe extends Fe {
   }
 }
 function ke(n, { blockSize: e, cacheSize: t }) {
-  return e === null ? n : new Cr(n, { blockSize: e, cacheSize: t });
+  return e === null ? n : new Fr(n, { blockSize: e, cacheSize: t });
 }
 function Gr(n, { headers: e = {}, credentials: t, maxRanges: r = 0, allowFullFile: i = !1, ...s } = {}) {
   const o = new Pr(n, t), a = new Pe(o, e, r, i);
@@ -2155,7 +2155,7 @@ function vr(n, { headers: e = {}, maxRanges: t = 0, allowFullFile: r = !1, ...i 
 function _r(n, { forceXHR: e = !1, ...t } = {}) {
   return typeof fetch == "function" && !e ? Gr(n, t) : typeof XMLHttpRequest < "u" ? Or(n, t) : vr(n, t);
 }
-class Ur extends Fe {
+class Ur extends Ce {
   constructor(e) {
     super(), this.file = e;
   }
@@ -2311,11 +2311,11 @@ class zr {
       throw new Error('Both "bbox" and "window" passed.');
     if (r || i) {
       if (t) {
-        const [d, p] = l.getOrigin(), [y, w] = l.getResolution();
+        const [g, p] = l.getOrigin(), [y, w] = l.getResolution();
         a = [
-          d + t[0] * y,
+          g + t[0] * y,
           p + t[1] * w,
-          d + t[2] * y,
+          g + t[2] * y,
           p + t[3] * w
         ];
       }
@@ -2333,33 +2333,33 @@ class zr {
     }
     if (s || o) {
       const f = [];
-      for (let d = 0; d < u; ++d) {
-        const p = await this.getImage(d), { SubfileType: y, NewSubfileType: w } = p.fileDirectory;
-        (d === 0 || y === 2 || w & 1) && f.push(p);
+      for (let g = 0; g < u; ++g) {
+        const p = await this.getImage(g), { SubfileType: y, NewSubfileType: w } = p.fileDirectory;
+        (g === 0 || y === 2 || w & 1) && f.push(p);
       }
-      f.sort((d, p) => d.getWidth() - p.getWidth());
-      for (let d = 0; d < f.length; ++d) {
-        const p = f[d], y = (h[2] - h[0]) / p.getWidth(), w = (h[3] - h[1]) / p.getHeight();
+      f.sort((g, p) => g.getWidth() - p.getWidth());
+      for (let g = 0; g < f.length; ++g) {
+        const p = f[g], y = (h[2] - h[0]) / p.getWidth(), w = (h[3] - h[1]) / p.getHeight();
         if (c = p, s && s > y || o && o > w)
           break;
       }
     }
-    let g = t;
+    let d = t;
     if (a) {
-      const [f, d] = l.getOrigin(), [p, y] = c.getResolution(l);
-      g = [
+      const [f, g] = l.getOrigin(), [p, y] = c.getResolution(l);
+      d = [
         Math.round((a[0] - f) / p),
-        Math.round((a[1] - d) / y),
+        Math.round((a[1] - g) / y),
         Math.round((a[2] - f) / p),
-        Math.round((a[3] - d) / y)
-      ], g = [
-        Math.min(g[0], g[2]),
-        Math.min(g[1], g[3]),
-        Math.max(g[0], g[2]),
-        Math.max(g[1], g[3])
+        Math.round((a[3] - g) / y)
+      ], d = [
+        Math.min(d[0], d[2]),
+        Math.min(d[1], d[3]),
+        Math.max(d[0], d[2]),
+        Math.max(d[1], d[3])
       ];
     }
-    return c.readRasters({ ...e, window: g });
+    return c.readRasters({ ...e, window: d });
   }
 }
 class ie extends zr {
@@ -2403,21 +2403,21 @@ class ie extends zr {
     const a = {};
     let l = e + (this.bigTiff ? 8 : 2);
     for (let h = 0; h < s; l += t, ++h) {
-      const g = i.readUint16(l), f = i.readUint16(l + 2), d = this.bigTiff ? i.readUint64(l + 4) : i.readUint32(l + 4);
+      const d = i.readUint16(l), f = i.readUint16(l + 2), g = this.bigTiff ? i.readUint64(l + 4) : i.readUint32(l + 4);
       let p, y;
       const w = ge(f), m = l + (this.bigTiff ? 12 : 8);
-      if (w * d <= (this.bigTiff ? 8 : 4))
-        p = z(i, f, d, m);
+      if (w * g <= (this.bigTiff ? 8 : 4))
+        p = z(i, f, g, m);
       else {
-        const I = i.readOffset(m), T = ge(f) * d;
+        const I = i.readOffset(m), T = ge(f) * g;
         if (i.covers(I, T))
-          p = z(i, f, d, I);
+          p = z(i, f, g, I);
         else {
           const S = await this.getSlice(I, T);
-          p = z(S, f, d, I);
+          p = z(S, f, g, I);
         }
       }
-      d === 1 && Ht.indexOf(g) === -1 && !(f === x.RATIONAL || f === x.SRATIONAL) ? y = p[0] : y = p, a[W[g]] = y;
+      g === 1 && Ht.indexOf(d) === -1 && !(f === x.RATIONAL || f === x.SRATIONAL) ? y = p[0] : y = p, a[W[d]] = y;
     }
     const c = Nr(a), u = i.readOffset(
       e + r + t * s
@@ -2625,8 +2625,8 @@ class j {
     const s = new Uint8ClampedArray(e.length * 4 / 3);
     for (let o = 0, a = 0; o < e.length; o += 3, a += 4) {
       const l = e[o + 0], c = e[o + 1] << 24 >> 24, u = e[o + 2] << 24 >> 24;
-      let h = (l + 16) / 116, g = c / 500 + h, f = h - u / 200, d, p, y;
-      g = 0.95047 * (g * g * g > 8856e-6 ? g * g * g : (g - 16 / 116) / 7.787), h = 1 * (h * h * h > 8856e-6 ? h * h * h : (h - 16 / 116) / 7.787), f = 1.08883 * (f * f * f > 8856e-6 ? f * f * f : (f - 16 / 116) / 7.787), d = g * 3.2406 + h * -1.5372 + f * -0.4986, p = g * -0.9689 + h * 1.8758 + f * 0.0415, y = g * 0.0557 + h * -0.204 + f * 1.057, d = d > 31308e-7 ? 1.055 * d ** (1 / 2.4) - 0.055 : 12.92 * d, p = p > 31308e-7 ? 1.055 * p ** (1 / 2.4) - 0.055 : 12.92 * p, y = y > 31308e-7 ? 1.055 * y ** (1 / 2.4) - 0.055 : 12.92 * y, s[a] = Math.max(0, Math.min(1, d)) * 255, s[a + 1] = Math.max(0, Math.min(1, p)) * 255, s[a + 2] = Math.max(0, Math.min(1, y)) * 255, s[a + 3] = 255;
+      let h = (l + 16) / 116, d = c / 500 + h, f = h - u / 200, g, p, y;
+      d = 0.95047 * (d * d * d > 8856e-6 ? d * d * d : (d - 16 / 116) / 7.787), h = 1 * (h * h * h > 8856e-6 ? h * h * h : (h - 16 / 116) / 7.787), f = 1.08883 * (f * f * f > 8856e-6 ? f * f * f : (f - 16 / 116) / 7.787), g = d * 3.2406 + h * -1.5372 + f * -0.4986, p = d * -0.9689 + h * 1.8758 + f * 0.0415, y = d * 0.0557 + h * -0.204 + f * 1.057, g = g > 31308e-7 ? 1.055 * g ** (1 / 2.4) - 0.055 : 12.92 * g, p = p > 31308e-7 ? 1.055 * p ** (1 / 2.4) - 0.055 : 12.92 * p, y = y > 31308e-7 ? 1.055 * y ** (1 / 2.4) - 0.055 : 12.92 * y, s[a] = Math.max(0, Math.min(1, g)) * 255, s[a + 1] = Math.max(0, Math.min(1, p)) * 255, s[a + 2] = Math.max(0, Math.min(1, y)) * 255, s[a + 3] = 255;
     }
     return s;
   }
@@ -2727,7 +2727,7 @@ const qr = (n) => {
        * @function
        * @param {Number} level
        */
-      P(this, "getTileWidth", (s) => {
+      E(this, "getTileWidth", (s) => {
         if (this.levels.length > s)
           return this.levels[s].tileWidth;
       });
@@ -2736,7 +2736,7 @@ const qr = (n) => {
        * @function
        * @param {Number} level
        */
-      P(this, "getTileHeight", (s) => {
+      E(this, "getTileHeight", (s) => {
         if (this.levels.length > s)
           return this.levels[s].tileHeight;
       });
@@ -2744,14 +2744,14 @@ const qr = (n) => {
        * @function
        * @param {Number} level
        */
-      P(this, "getLevelScale", (s) => {
+      E(this, "getLevelScale", (s) => {
         let o = NaN;
         return this.levels.length > 0 && s >= this.minLevel && s <= this.maxLevel && (o = this.levels[s].width / this.levels[this.maxLevel].width), o;
       });
       /**
        * Handle maintaining unique caches per channel in multi-channel images
        */
-      P(this, "getTileHashKey", (s, o, a) => {
+      E(this, "getTileHashKey", (s, o, a) => {
         var l;
         return `${((l = this == null ? void 0 : this.channel) == null ? void 0 : l.name) ?? ""}_${s}_${o}_${a}`;
       });
@@ -2762,11 +2762,11 @@ const qr = (n) => {
        * @param {Number} x
        * @param {Number} y
        */
-      P(this, "getTileUrl", (s, o, a) => {
+      E(this, "getTileUrl", (s, o, a) => {
         let l = this.levels[s], c = new String(`${s}/${o}_${a}`);
-        return c.fetch = /* @__PURE__ */ ((u, h, g, f, d) => () => this.regionToDataUrl.call(u, h, g, f, d))(this, l, o, a, c), c;
+        return c.fetch = /* @__PURE__ */ ((u, h, d, f, g) => () => this.regionToDataUrl.call(u, h, d, f, g))(this, l, o, a, c), c;
       });
-      P(this, "downloadTileStart", (s) => {
+      E(this, "downloadTileStart", (s) => {
         s.src.fetch().then((o) => {
           let a = new Image(), l = "" + s.src;
           a.onload = function() {
@@ -2776,26 +2776,29 @@ const qr = (n) => {
           }, a.src = o;
         });
       });
-      P(this, "downloadTileAbort", (s) => {
+      E(this, "downloadTileAbort", (s) => {
         s.src.abortController && s.src.abortController.abort();
       });
-      P(this, "setupComplete", () => {
+      E(this, "setupComplete", () => {
         this._ready = !0, this.promises.ready.resolve(), this.raiseEvent("ready", { tileSource: this });
       });
-      P(this, "setupLevels", () => {
+      E(this, "setupLevels", () => {
         if (this._ready)
           return;
-        let s = this.GeoTIFFImages.sort((h, g) => g.getWidth() - h.getWidth()), o = this._tileSize, a = this._tileSize, l = s[0].getWidth();
+        let s = this.GeoTIFFImages.sort((h, d) => d.getWidth() - h.getWidth()), o = this._tileSize, a = this._tileSize, l = s[0].getWidth();
         this.width = l;
         let c = s[0].getHeight();
-        if (this.height = c, this.tileOverlap = 0, this.minLevel = 0, this.aspectRatio = this.width / this.height, this.dimensions = new n.Point(this.width, this.height), s.reduce(
-          (h, g) => (h.width !== -1 && (h.valid = h.valid && g.getWidth() < h.width), h.width = g.getWidth(), h),
+        if (this.height = c, this.tileOverlap = 0, this.minLevel = 0, this.aspectRatio = this.width / this.height, this.dimensions = new n.Point(this.width, this.height), s.forEach((h) => {
+          const d = h.fileDirectory[34675];
+          typeof d == "string" && t._iccProfileCache.has(d) && (h.fileDirectory[34675] = t._iccProfileCache.get(d));
+        }), s.reduce(
+          (h, d) => (h.width !== -1 && (h.valid = h.valid && d.getWidth() < h.width), h.width = d.getWidth(), h),
           { valid: !0, width: -1 }
         ).valid)
           this.levels = s.map((h) => {
-            let g = h.getWidth(), f = h.getHeight();
+            let d = h.getWidth(), f = h.getHeight();
             return {
-              width: g,
+              width: d,
               height: f,
               tileWidth: this.options.tileWidth || h.getTileWidth() || o,
               tileHeight: this.options.tileHeight || h.getTileHeight() || a,
@@ -2806,44 +2809,44 @@ const qr = (n) => {
         else {
           let h = Math.ceil(
             Math.log2(Math.max(l / o, c / a))
-          ), g = [...Array(h).keys()].filter((f) => f % 2 == 0);
-          this.levels = g.map((f) => {
-            let d = Math.pow(2, f);
+          ), d = [...Array(h).keys()].filter((f) => f % 2 == 0);
+          this.levels = d.map((f) => {
+            let g = Math.pow(2, f);
             const p = s.filter((w) => {
               const m = Math.pow(2, f - 1);
-              return m >= 0 ? w.getWidth() * m < l && w.getWidth() * d >= l : w.getWidth() * d >= l;
+              return m >= 0 ? w.getWidth() * m < l && w.getWidth() * g >= l : w.getWidth() * g >= l;
             });
             if (p.length === 0)
               return null;
             const y = p[0];
             return {
-              width: l / d,
-              height: c / d,
+              width: l / g,
+              height: c / g,
               tileWidth: this.options.tileWidth || y.getTileWidth() || o,
               tileHeight: this.options.tileHeight || y.getTileHeight() || a,
               image: y,
-              scaleFactor: d * y.getWidth() / l
+              scaleFactor: g * y.getWidth() / l
             };
           }).filter((f) => f !== null), this.maxLevel = this.levels.length - 1;
         }
-        this.levels = this.levels.sort((h, g) => h.width - g.width), this._tileWidth = this.levels[0].tileWidth, this._tileHeight = this.levels[0].tileHeight, this.setupComplete();
+        this.levels = this.levels.sort((h, d) => h.width - d.width), this._tileWidth = this.levels[0].tileWidth, this._tileHeight = this.levels[0].tileHeight, this.setupComplete();
       });
-      P(this, "regionToDataUrl", (s, o, a, l) => {
+      E(this, "regionToDataUrl", (s, o, a, l) => {
         var w, m, I, T, S;
         let c = this.options.logLatency && Date.now(), h = (l.abortController = new AbortController()).signal;
-        const g = s.tileWidth, f = s.tileHeight, d = [o * g, a * f, (o + 1) * g, (a + 1) * f].map(
-          (A) => A * s.scaleFactor
+        const d = s.tileWidth, f = s.tileHeight, g = [o * d, a * f, (o + 1) * d, (a + 1) * f].map(
+          (D) => D * s.scaleFactor
         ), p = s.image;
         if ((m = (w = p.fileDirectory) == null ? void 0 : w.Software) == null ? void 0 : m.startsWith("PerkinElmer-QPI")) {
-          const A = new DOMParser().parseFromString(
+          const D = new DOMParser().parseFromString(
             (I = p.fileDirectory) == null ? void 0 : I.ImageDescription,
             "text/xml"
           );
-          (T = A.querySelector("Name")) == null || T.textContent;
-          const F = (S = A.querySelector("Color")) == null ? void 0 : S.textContent, b = F ? F.split(",").map((G) => parseInt(G)) : [255, 255, 255];
+          (T = D.querySelector("Name")) == null || T.textContent;
+          const C = (S = D.querySelector("Color")) == null ? void 0 : S.textContent, b = C ? C.split(",").map((G) => parseInt(G)) : [255, 255, 255];
           return s.image.readRGB({
             interleave: !0,
-            window: d,
+            window: g,
             pool: this._pool,
             width: s.tileWidth,
             height: s.tileHeight,
@@ -2851,53 +2854,53 @@ const qr = (n) => {
           }).then((G) => {
             let R = document.createElement("canvas");
             R.width = s.tileWidth, R.height = s.tileHeight;
-            let C = R.getContext("2d"), M = new Uint8ClampedArray(4 * R.width * R.height), U = new Uint8ClampedArray(G), L, B;
+            let F = R.getContext("2d"), M = new Uint8ClampedArray(4 * R.width * R.height), U = new Uint8ClampedArray(G), L, B;
             for (L = 0, B = 0; L < U.length; L += 3, B += 4)
               M[B] = U[L] * b[0] / 255, M[B + 1] = U[L + 1] * b[1] / 255, M[B + 2] = U[L + 2] * b[2] / 255, M[B + 3] = 255;
-            const Q = C.createImageData(R.width, R.height);
-            Q.data.set(M), C.putImageData(Q, 0, 0);
+            const Q = F.createImageData(R.width, R.height);
+            Q.data.set(M), F.putImageData(Q, 0, 0);
             let ne = R.toDataURL("image/jpeg", 0.8);
             return this.options.logLatency && (typeof this.options.logLatency == "function" ? this.options.logLatency : console.log)("Tile latency (ms):", Date.now() - c), ne;
           });
         } else
-          return s.image.getTileOrStrip(o, a, null, this._pool, h).then((A) => {
-            let F = new Uint8ClampedArray(A.data), b = document.createElement("canvas");
+          return s.image.getTileOrStrip(o, a, null, this._pool, h).then((D) => {
+            let C = new Uint8ClampedArray(D.data), b = document.createElement("canvas");
             b.width = s.tileWidth, b.height = s.tileHeight;
-            let G = b.getContext("2d"), R = s.image.fileDirectory.PhotometricInterpretation, C;
-            if (F.length / (b.width * b.height) % 4 === 0)
-              C = F;
+            let G = b.getContext("2d"), R = s.image.fileDirectory.PhotometricInterpretation, F;
+            if (C.length / (b.width * b.height) % 4 === 0)
+              F = C;
             else
               switch (R) {
-                case D.WhiteIsZero:
-                  C = j.RGBAfromWhiteIsZero(
-                    F,
+                case A.WhiteIsZero:
+                  F = j.RGBAfromWhiteIsZero(
+                    C,
                     2 ** s.image.fileDirectory.BitsPerSample[0]
                   );
                   break;
-                case D.BlackIsZero:
-                  C = j.RGBAfromBlackIsZero(
-                    F,
+                case A.BlackIsZero:
+                  F = j.RGBAfromBlackIsZero(
+                    C,
                     2 ** s.image.fileDirectory.BitsPerSample[0]
                   );
                   break;
-                case D.RGB:
-                  C = j.RGBAfromRGB(F);
+                case A.RGB:
+                  F = j.RGBAfromRGB(C);
                   break;
-                case D.Palette:
-                  C = j.RGBAfromPalette(F, 2 ** s.image.fileDirectory.colorMap);
+                case A.Palette:
+                  F = j.RGBAfromPalette(C, 2 ** s.image.fileDirectory.colorMap);
                   break;
-                case D.CMYK:
-                  C = j.RGBAfromCMYK(F);
+                case A.CMYK:
+                  F = j.RGBAfromCMYK(C);
                   break;
-                case D.YCbCr:
-                  C = j.RGBAfromYCbCr(F);
+                case A.YCbCr:
+                  F = j.RGBAfromYCbCr(C);
                   break;
-                case D.CIELab:
-                  C = j.RGBAfromCIELab(F);
+                case A.CIELab:
+                  F = j.RGBAfromCIELab(C);
                   break;
               }
             const M = G.createImageData(b.width, b.height);
-            M.data.set(C), G.putImageData(M, 0, 0);
+            M.data.set(F), G.putImageData(M, 0, 0);
             let U = b.toDataURL("image/jpeg", 0.8);
             return this.options.logLatency && (typeof this.options.logLatency == "function" ? this.options.logLatency : console.log)(
               "Tile latency (ms):",
@@ -2905,13 +2908,23 @@ const qr = (n) => {
             ), U;
           });
       });
+      // Add ICC profile caching logic
+      E(this, "_cacheICCProfiles", (s) => {
+        s.forEach((o) => {
+          const a = o.fileDirectory[34675];
+          if (a) {
+            const l = Array.from(a).reduce((c, u) => c * 31 + u & 4294967295, 0).toString(16);
+            t._iccProfileCache.has(l) || t._iccProfileCache.set(l, a), o.fileDirectory[34675] = l;
+          }
+        });
+      });
       t._osdReady || t.applyOSDPatch(n);
       let a = this;
       this.input = s, this.options = o, this.channel = (s == null ? void 0 : s.channel) ?? null, this._ready = !1, this._pool = t.sharedPool, this._tileSize = 256, s.GeoTIFF && s.GeoTIFFImages ? (this.promises = {
         GeoTIFF: Promise.resolve(s.GeoTIFF),
         GeoTIFFImages: Promise.resolve(s.GeoTIFFImages),
         ready: new fe()
-      }, this.GeoTIFF = s.GeoTIFF, this.imageCount = s.GeoTIFFImages.length, this.GeoTIFFImages = s.GeoTIFFImages, this.setupLevels()) : (this.promises = {
+      }, this.GeoTIFF = s.GeoTIFF, this.imageCount = s.GeoTIFFImages.length, this.GeoTIFFImages = s.GeoTIFFImages, this._cacheICCProfiles(s.GeoTIFFImages), this.setupLevels()) : (this.promises = {
         GeoTIFF: s instanceof File ? _e(s) : ve(s),
         GeoTIFFImages: new fe(),
         ready: new fe()
@@ -2920,7 +2933,9 @@ const qr = (n) => {
         let c = [...Array(l).keys()].map((u) => a.GeoTIFF.getImage(u));
         return Promise.all(c);
       }).then((l) => {
-        a.GeoTIFFImages = l, a.promises.GeoTIFFImages.resolve(l), this.setupLevels();
+        l = l.filter(
+          (u) => u.fileDirectory.photometricInterpretation !== A.TransparencyMask
+        ), new t({})._cacheICCProfiles(l), a.GeoTIFFImages = l, a.promises.GeoTIFFImages.resolve(l), this.setupLevels();
       }).catch((l) => {
         throw console.error("Re-throwing error with GeoTIFF:", l), l;
       }));
@@ -2935,39 +2950,39 @@ const qr = (n) => {
    * @static sharedPool
    * @type {Pool}
    */
-  P(t, "sharedPool", new mr()), P(t, "_osdReady", !1), // Apply ImageJob patch to OpenSeadragon. Can be extended for modular patches.
-  P(t, "applyOSDPatch", (s) => {
+  E(t, "sharedPool", new mr()), E(t, "_osdReady", !1), E(t, "_iccProfileCache", /* @__PURE__ */ new Map()), // Apply ImageJob patch to OpenSeadragon. Can be extended for modular patches.
+  E(t, "applyOSDPatch", (s) => {
     Vr(s), t._osdReady = !0;
-  }), P(t, "getAllTileSources", async (s, o) => {
+  }), E(t, "getAllTileSources", async (s, o) => {
     const a = s instanceof File ? s.name.split(".").pop() : s.split(".").pop();
     let l = s instanceof File ? _e(s) : ve(s);
     return l.then((c) => (l = c, c.getImageCount())).then(
       (c) => Promise.all([...Array(c).keys()].map(async (u) => (await l).getImage(u)))
     ).then((c) => {
       c = c.filter(
-        (f) => f.fileDirectory.photometricInterpretation !== D.TransparencyMask
-      ), c.sort((f, d) => d.getWidth() - f.getWidth());
+        (f) => f.fileDirectory.photometricInterpretation !== A.TransparencyMask
+      ), c.sort((f, g) => g.getWidth() - f.getWidth());
       const u = 0.015;
-      return c.reduce((f, d) => {
-        const p = d.getWidth() / d.getHeight();
+      return c.reduce((f, g) => {
+        const p = g.getWidth() / g.getHeight();
         let y = "";
-        d.fileDirectory.ImageDescription && (y = d.fileDirectory.ImageDescription.split(`
-`)[1]);
+        g.fileDirectory.ImageDescription && (y = g.fileDirectory.ImageDescription.split(`
+`)[1] ?? "");
         const w = f.filter(
-          (m) => Math.abs(1 - m.aspectRatio / p) < u && !(y.includes("macro") || y.includes("label"))
+          (m) => Math.abs(1 - m.aspectRatio / p) < u && !(y != null && y.includes("macro") || y != null && y.includes("label"))
           // Separate out macro thumbnails and labels
         );
         if (w.length === 0) {
           let m = {
             aspectRatio: p,
-            images: [d]
+            images: [g]
           };
           f.push(m);
         } else
-          w[0].images.push(d);
+          w[0].images.push(g);
         return f;
-      }, []).map((f) => f.images).map((f, d) => {
-        if (d !== 0)
+      }, []).map((f) => f.images).map((f, g) => {
+        if (g !== 0)
           return new n.GeoTIFFTileSource(
             {
               GeoTIFF: l,
@@ -3013,4 +3028,4 @@ export {
   qr as e,
   We as g
 };
-//# sourceMappingURL=main-BYx3b45W.js.map
+//# sourceMappingURL=main-BugwveVM.js.map

@@ -45,6 +45,7 @@ export const enableGeoTIFFTileSource = (OpenSeadragon) => {
      */
     static sharedPool = new Pool();
     static _osdReady = false;
+    static _iccProfileCache = new Map();
 
     constructor(input, opts = { logLatency: false }) {
       super();
@@ -73,6 +74,8 @@ export const enableGeoTIFFTileSource = (OpenSeadragon) => {
         this.imageCount = input.GeoTIFFImages.length;
         this.GeoTIFFImages = input.GeoTIFFImages;
 
+        this._cacheICCProfiles(input.GeoTIFFImages);
+
         this.setupLevels();
       } else {
         this.promises = {
@@ -90,6 +93,17 @@ export const enableGeoTIFFTileSource = (OpenSeadragon) => {
             return Promise.all(promises);
           })
           .then((images) => {
+            // Filter out transparency masks
+            images = images.filter(
+              (image) =>
+                image.fileDirectory.photometricInterpretation !==
+                globals.photometricInterpretations.TransparencyMask
+            );
+
+            // Cache ICC profiles
+            const source = new GeoTIFFTileSource({});
+            source._cacheICCProfiles(images);
+
             self.GeoTIFFImages = images;
             self.promises.GeoTIFFImages.resolve(images);
             this.setupLevels();
@@ -319,6 +333,14 @@ export const enableGeoTIFFTileSource = (OpenSeadragon) => {
       this.aspectRatio = this.width / this.height;
       this.dimensions = new OpenSeadragon.Point(this.width, this.height);
 
+      // Restore ICC profiles from cache
+      images.forEach((image) => {
+        const profileHash = image.fileDirectory[34675];
+        if (typeof profileHash === 'string' && GeoTIFFTileSource._iccProfileCache.has(profileHash)) {
+          image.fileDirectory[34675] = GeoTIFFTileSource._iccProfileCache.get(profileHash);
+        }
+      });
+
       // a valid tiled pyramid has strictly monotonic size for levels
       let pyramid = images.reduce(
         (acc, im) => {
@@ -520,6 +542,27 @@ export const enableGeoTIFFTileSource = (OpenSeadragon) => {
           return dataURL;
         });
       }
+    };
+
+    // Add ICC profile caching logic
+    _cacheICCProfiles = (images) => {
+      images.forEach((image) => {
+        const iccProfile = image.fileDirectory[34675]; // ICC Profile tag
+        if (iccProfile) {
+          // Create a hash of the ICC profile data
+          const hash = Array.from(iccProfile)
+            .reduce((acc, val) => (acc * 31 + val) & 0xFFFFFFFF, 0)
+            .toString(16);
+          
+          // Cache the profile if not already cached
+          if (!GeoTIFFTileSource._iccProfileCache.has(hash)) {
+            GeoTIFFTileSource._iccProfileCache.set(hash, iccProfile);
+          }
+          
+          // Replace the profile data with the hash reference
+          image.fileDirectory[34675] = hash;
+        }
+      });
     };
   }
 
